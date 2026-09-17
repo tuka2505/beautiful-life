@@ -32,8 +32,8 @@ export const products: Product[] = [
     highlight: "파워스핀",
     image: "/products/product3.jpeg",
     url: "https://naver.me/GXFJruE9",
-    originalPrice: 189000,
-    salePrice: 99000,
+    originalPrice: 99000,
+    salePrice: 64800,
   },
   {
     name: "2 in 1 멀티 살균 스팀청소기",
