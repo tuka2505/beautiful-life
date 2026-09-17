@@ -1,6 +1,8 @@
 import Image from "next/image";
 import type { Product } from "@/data/products";
 
+const ABOVE_THE_FOLD_COUNT = 4;
+
 type ProductCardProps = {
   product: Product;
   index: number;
@@ -8,6 +10,7 @@ type ProductCardProps = {
 
 export default function ProductCard({ product, index }: ProductCardProps) {
   const number = String(index + 1).padStart(2, "0");
+  const isAboveTheFold = index < ABOVE_THE_FOLD_COUNT;
 
   return (
     <a
@@ -15,56 +18,46 @@ export default function ProductCard({ product, index }: ProductCardProps) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`${number}번 ${product.name} · 새 창에서 상품 페이지 열기`}
-      className="group block rounded-[20px] border border-line bg-surface p-3 shadow-[0_1px_2px_rgba(23,22,19,0.04)] transition duration-200 ease-out hover:border-ink/15 hover:shadow-[0_10px_28px_rgba(23,22,19,0.08)] active:scale-[0.995] sm:hover:-translate-y-0.5"
+      className="group flex items-center gap-3.5 rounded-[22px] bg-surface p-2.5 pr-3.5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] ring-1 ring-black/[0.04] transition-[transform,box-shadow,background-color] duration-200 ease-out select-none active:scale-[0.98] active:bg-[#fafafa] sm:gap-5 sm:p-3 sm:pr-5 sm:hover:shadow-[0_8px_28px_rgba(0,0,0,0.08)]"
     >
-      <article>
-        <div className="flex items-center gap-3 px-2 pt-1 pb-3">
-          <span className="text-[13px] font-semibold tracking-[0.1em] text-ink tabular-nums">
-            {number}
-          </span>
-          <span className="h-px flex-1 bg-line" aria-hidden="true" />
-        </div>
-
-        <div className="relative aspect-4/3 overflow-hidden rounded-[14px] bg-canvas">
+      <article className="flex min-w-0 flex-1 items-center gap-3.5 sm:gap-5">
+        <div className="relative size-[84px] shrink-0 overflow-hidden rounded-[16px] bg-canvas min-[375px]:size-[92px] sm:size-[112px]">
           <Image
             src={product.image}
             alt={product.name}
             fill
-            sizes="(max-width: 640px) 92vw, 552px"
-            priority={index < 2}
-            className="object-cover transition-transform duration-300 ease-out sm:group-hover:scale-[1.02]"
+            sizes="(min-width: 640px) 112px, 92px"
+            loading={isAboveTheFold ? "eager" : "lazy"}
+            fetchPriority={isAboveTheFold ? "high" : "auto"}
+            className="object-cover transition-transform duration-300 ease-out sm:group-hover:scale-[1.04]"
           />
         </div>
 
-        <div className="flex items-start gap-3 px-2 pt-4 pb-1">
-          <div className="min-w-0 flex-1">
-            <h3 className="text-[17px] leading-snug font-semibold break-words text-ink">
-              {product.name}
-            </h3>
-            <p className="mt-1.5 truncate text-[12.5px] text-muted">
-              {product.url}
-            </p>
-          </div>
-
-          <span
-            aria-hidden="true"
-            className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full border border-line text-muted transition-colors duration-200 group-hover:border-accent/40 group-hover:bg-accent/5 group-hover:text-accent"
-          >
-            <svg
-              viewBox="0 0 16 16"
-              fill="none"
-              className="size-[14px]"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M4.5 11.5 11.5 4.5" />
-              <path d="M5.75 4.5h5.75v5.75" />
-            </svg>
-          </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-[12px] leading-none font-semibold tracking-[0.02em] text-tertiary tabular-nums sm:text-[13px]">
+            {number}
+          </p>
+          <h3 className="mt-1.5 line-clamp-2 text-[16px] leading-[1.32] font-semibold tracking-[-0.02em] break-words text-ink sm:text-[18px]">
+            {product.name}
+          </h3>
+          <p className="mt-1 truncate text-[12px] tracking-[-0.005em] text-tertiary sm:text-[13px]">
+            {product.url}
+          </p>
         </div>
       </article>
+
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 8 14"
+        fill="none"
+        className="h-3.5 w-2 shrink-0 text-hairline transition-[color,transform] duration-200 group-hover:translate-x-0.5 group-hover:text-accent group-active:text-accent"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="m1.5 1.5 5 5.5-5 5.5" />
+      </svg>
     </a>
   );
 }

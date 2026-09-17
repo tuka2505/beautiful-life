@@ -7,31 +7,35 @@ type ProductListProps = {
 };
 
 export default function ProductList({ products }: ProductListProps) {
-  if (products.length === 0) {
-    return (
-      <section aria-labelledby="product-list-heading">
-        <h2 id="product-list-heading" className="sr-only">
-          추천 상품 목록
-        </h2>
-        <p className="rounded-[20px] border border-dashed border-line py-16 text-center text-[14px] text-muted">
-          {site.emptyMessage}
-        </p>
-      </section>
-    );
-  }
-
   return (
     <section aria-labelledby="product-list-heading">
-      <h2 id="product-list-heading" className="sr-only">
-        추천 상품 목록
-      </h2>
-      <ul className="flex flex-col gap-5 sm:gap-6">
-        {products.map((product, index) => (
-          <li key={`${index}-${product.url}`}>
-            <ProductCard product={product} index={index} />
-          </li>
-        ))}
-      </ul>
+      <div className="mb-2.5 flex items-baseline justify-between sm:mb-3.5">
+        <h2
+          id="product-list-heading"
+          className="text-[13px] font-semibold tracking-[-0.01em] text-ink sm:text-[15px]"
+        >
+          {site.listTitle}
+        </h2>
+        {products.length > 0 && (
+          <span className="text-[13px] text-tertiary tabular-nums sm:text-[15px]">
+            {products.length}개
+          </span>
+        )}
+      </div>
+
+      {products.length === 0 ? (
+        <p className="rounded-[22px] bg-surface py-14 text-center text-[15px] text-tertiary ring-1 ring-black/[0.04]">
+          {site.emptyMessage}
+        </p>
+      ) : (
+        <ul className="flex flex-col gap-2.5 sm:gap-3.5">
+          {products.map((product, index) => (
+            <li key={`${index}-${product.url}`}>
+              <ProductCard product={product} index={index} />
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 }

@@ -2,8 +2,8 @@ import { site } from "@/data/site";
 
 export default function AffiliateNotice() {
   return (
-    <footer className="mt-14 border-t border-line pt-6 pb-12">
-      <p className="text-[12px] leading-relaxed text-muted">
+    <footer className="mt-10 border-t border-hairline/70 pt-5 pb-10 sm:mt-14">
+      <p className="text-[12px] leading-[1.6] tracking-[-0.005em] text-tertiary">
         {site.affiliateNotice}
       </p>
     </footer>
