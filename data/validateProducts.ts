@@ -45,6 +45,33 @@ function findUrlError(url: string): string | null {
   return null;
 }
 
+function findPriceError({ originalPrice, salePrice }: Product): string | null {
+  if (originalPrice === undefined && salePrice === undefined) return null;
+
+  if (originalPrice === undefined || salePrice === undefined) {
+    return "originalPrice(판매가)와 salePrice(링크 할인가)는 둘 다 입력해야 합니다.";
+  }
+
+  const isValidPrice = (price: number) => Number.isInteger(price) && price > 0;
+  if (!isValidPrice(originalPrice) || !isValidPrice(salePrice)) {
+    return "가격은 쉼표 없이 숫자로만 입력해야 합니다. (예: 99000)";
+  }
+
+  if (salePrice >= originalPrice) {
+    return "salePrice(링크 할인가)는 originalPrice(판매가)보다 낮아야 합니다.";
+  }
+
+  return null;
+}
+
+function findHighlightError({ name, highlight }: Product): string | null {
+  if (highlight === undefined) return null;
+  if (!highlight.trim() || !name?.includes(highlight)) {
+    return `highlight "${highlight}"가 상품명에 없습니다. (띄어쓰기까지 같아야 합니다)`;
+  }
+  return null;
+}
+
 export function validateProducts(products: Product[]) {
   const errors: string[] = [];
 
@@ -54,6 +81,8 @@ export function validateProducts(products: Product[]) {
       product.name?.trim() ? null : "name이 비어 있습니다.",
       findImageError(product.image ?? ""),
       findUrlError(product.url ?? ""),
+      findPriceError(product),
+      findHighlightError(product),
     ].filter((problem): problem is string => problem !== null);
 
     problems.forEach((problem) => errors.push(`- ${label}: ${problem}`));
