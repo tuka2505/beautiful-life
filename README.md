@@ -1,0 +1,52 @@
+# 영상 속 추천 상품 (링크 랜딩페이지)
+
+쇼츠/릴스/틱톡 프로필 링크에 연결해서 쓰는 상품 링크 랜딩페이지입니다.
+DB, API, 관리자 페이지 없이 코드로만 상품을 관리합니다.
+
+## 상품 추가하기
+
+1. 상품 이미지를 `public/products/` 폴더에 넣습니다. (예: `vacuum.webp`)
+2. `data/products.ts` 배열 **맨 마지막**에 객체를 하나 추가합니다.
+
+```ts
+{
+  name: "OO 무선 청소기",
+  image: "/products/vacuum.webp",
+  url: "https://link.coupang.com/a/xxxxx",
+}
+```
+
+상품 번호(01, 02, 03 …)는 배열 순서대로 자동 생성되므로 따로 적지 않습니다.
+순서를 바꾸고 싶으면 배열 안에서 객체 위치만 옮기면 됩니다.
+
+### 자동 검사
+
+`npm run dev` / `npm run build` 때 상품 데이터를 자동으로 검사하고, 문제가 있으면 몇 번 상품이 왜 잘못됐는지 알려주며 멈춥니다.
+빌드가 실패하면 Vercel은 기존 배포를 그대로 유지하므로 깨진 페이지가 공개되지 않습니다.
+
+- 이미지 파일이 `public/products/`에 실제로 있는지 (대소문자까지 정확히 — Vercel은 대소문자를 구분합니다)
+- image가 `/products/파일명` 형태인지 (외부 이미지 URL 불가)
+- 이미지 형식: webp, jpg, jpeg, png, avif, gif
+- url이 `https://`로 시작하는 전체 주소인지
+- name이 비어 있지 않은지
+
+이미지 파일명은 영문 소문자·숫자·하이픈(예: `vacuum-01.webp`)을 권장합니다.
+
+## 문구 수정
+
+상단 문구, 보조 문구, 제휴 안내 문구, 페이지 title/description은
+`data/site.ts` 한 곳에서 수정합니다.
+
+## 실행
+
+```bash
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # 배포 전 빌드 확인
+npm run lint
+```
+
+## 배포
+
+GitHub 저장소를 Vercel에 연결하면 추가 설정 없이 그대로 배포됩니다.
+환경변수, 빌드 커맨드 설정 모두 필요 없습니다.
