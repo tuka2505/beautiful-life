@@ -43,4 +43,12 @@ export const products: Product[] = [
     originalPrice: 189000,
     salePrice: 99000,
   },
+  {
+    name: "사계절용 여성 니삭스 장목 롱 골지 긴양말 3세트 (가을/겨울 강추!)",
+    highlight: "가을/겨울 강추!",
+    image: "/products/product5.png",
+    url: "https://link.coupang.com/a/hyayxBcSkK",
+    originalPrice: 26800,
+    salePrice: 12900,
+  },
 ];
